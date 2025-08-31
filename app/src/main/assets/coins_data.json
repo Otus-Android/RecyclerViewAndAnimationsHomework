@@ -79,7 +79,7 @@
       "price": 0.4832,
       "change24h": 1.16,
       "iconPath": "android.resource://ru.otus.cryptosample/drawable/ada",
-      "category": "cat1"
+      "category": "cat0"
     },
     {
       "id": "add",
@@ -655,7 +655,7 @@
       "price": 67302.0429,
       "change24h": 17.21,
       "iconPath": "android.resource://ru.otus.cryptosample/drawable/btc",
-      "category": "cat1"
+      "category": "cat0"
     },
     {
       "id": "btcd",
@@ -1195,7 +1195,7 @@
       "price": 9.6606,
       "change24h": 13.04,
       "iconPath": "android.resource://ru.otus.cryptosample/drawable/dot",
-      "category": "cat1"
+      "category": "cat0"
     },
     {
       "id": "drgn",
@@ -1411,7 +1411,7 @@
       "price": 0.7605,
       "change24h": -11.27,
       "iconPath": "android.resource://ru.otus.cryptosample/drawable/eos",
-      "category": "cat1"
+      "category": "cat0"
     },
     {
       "id": "eqli",
@@ -1447,7 +1447,7 @@
       "price": 3263.4509,
       "change24h": 10.63,
       "iconPath": "android.resource://ru.otus.cryptosample/drawable/eth",
-      "category": "cat1"
+      "category": "cat0"
     },
     {
       "id": "ethos",
@@ -3427,7 +3427,7 @@
       "price": 105.233,
       "change24h": 15.35,
       "iconPath": "android.resource://ru.otus.cryptosample/drawable/sol",
-      "category": "cat1"
+      "category": "cat0"
     },
     {
       "id": "spacehbit",
@@ -3751,7 +3751,7 @@
       "price": 0.0757,
       "change24h": 15.58,
       "iconPath": "android.resource://ru.otus.cryptosample/drawable/trx",
-      "category": "cat1"
+      "category": "cat0"
     },
     {
       "id": "tusd",
@@ -4201,7 +4201,7 @@
       "price": 0.7565,
       "change24h": 8.89,
       "iconPath": "android.resource://ru.otus.cryptosample/drawable/xrp",
-      "category": "cat1"
+      "category": "cat0"
     },
     {
       "id": "xsg",
@@ -4349,6 +4349,11 @@
     }
   ],
   "categories": [
+    {
+      "id": "cat0",
+      "name": "Top",
+      "order": 0
+    },
     {
       "id": "cat1",
       "name": "Layer-1 & Majors",
