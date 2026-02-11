@@ -54,18 +54,23 @@ class CoinListViewModel(
     }
 
     private fun updateUiState() {
-        var processedCategories = if (showAll) {
-            fullCategories
-        } else {
-            fullCategories.map { category ->
-                category.copy(coins = category.coins.take(4))
+        val processedCategories = fullCategories.map { category ->
+            val coinsToShow = if (showAll) {
+                category.coins
+            } else {
+                category.coins.take(4)
             }
-        }
 
-        processedCategories = processedCategories.map { category ->
-            category.copy(coins = category.coins.map { coin ->
+            val shouldShowHorizontal = coinsToShow.size > 10
+
+            val highlightedCoins = coinsToShow.map { coin ->
                 coin.copy(highlight = highlightMovers && coin.isHotMover)
-            })
+            }
+
+            category.copy(
+                coins = highlightedCoins,
+                showHorizontal = shouldShowHorizontal
+            )
         }
 
         _state.update { it.copy(categories = processedCategories) }

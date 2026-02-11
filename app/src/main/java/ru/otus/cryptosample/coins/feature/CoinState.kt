@@ -8,6 +8,7 @@ data class CoinCategoryState(
     val id: String,
     val name: String,
     val coins: List<CoinState>,
+    val showHorizontal: Boolean = false
 )
 
 data class CoinState(
@@ -17,6 +18,6 @@ data class CoinState(
     val price: String,
     val goesUp: Boolean,
     val discount: String,
-    val isHotMover: Boolean,
+    val isHotMover: Boolean = false,
     val highlight: Boolean = false,
 )

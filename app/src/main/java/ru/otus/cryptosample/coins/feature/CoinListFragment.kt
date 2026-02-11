@@ -65,7 +65,7 @@ class CoinListFragment : Fragment() {
         gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 return when (coinsAdapter.getItemViewType(position)) {
-                    0 -> 2 // Category header spans full width
+                    0, 2 -> 2 // Category header spans full width
                     1 -> 1 // Coin item spans half width
                     else -> 1
                 }
@@ -75,6 +75,7 @@ class CoinListFragment : Fragment() {
         binding.recyclerView.apply {
             layoutManager = gridLayoutManager
             adapter = coinsAdapter
+            setHasFixedSize(true)
         }
     }
 
