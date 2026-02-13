@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.coroutines.launch
 import ru.otus.cryptosample.CoinsSampleApp
 import ru.otus.cryptosample.coins.feature.adapter.CoinsAdapter
+import ru.otus.cryptosample.coins.feature.adapter.ScaleItemAnimator
 import ru.otus.cryptosample.coins.feature.di.DaggerCoinListComponent
 import ru.otus.cryptosample.databinding.FragmentCoinListBinding
 import javax.inject.Inject
@@ -72,9 +73,17 @@ class CoinListFragment : Fragment() {
             }
         }
 
+        // Создаем и настраиваем кастомный ItemAnimator
+        val itemAnimator = ScaleItemAnimator()
+
+        // Настраиваем задержки для каскадного эффекта
+        itemAnimator.addDuration = 400
+        itemAnimator.removeDuration = 400
+
         binding.recyclerView.apply {
             layoutManager = gridLayoutManager
             adapter = coinsAdapter
+            this.itemAnimator = itemAnimator
             setHasFixedSize(true)
         }
     }
