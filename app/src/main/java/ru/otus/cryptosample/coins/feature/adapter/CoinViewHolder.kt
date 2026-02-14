@@ -33,4 +33,32 @@ class CoinViewHolder(
             fireBadge.isVisible = coin.highlight
         }
     }
+
+    fun bindWithPayload(coin: CoinState, payloads: List<Any>) {
+        payloads.forEach { payload ->
+            when (payload) {
+                is List<*> -> {
+                    payload.forEach { payloadItem ->
+                        when (payloadItem) {
+                            "highlight" -> {
+                                binding.fireBadge.isVisible = coin.highlight
+                            }
+                            "price" -> {
+                                binding.coinPrice.text = coin.price
+                            }
+                            "discount" -> {
+                                binding.coinChange.text = coin.discount
+                                val changeColor = if (coin.goesUp) {
+                                    ContextCompat.getColor(itemView.context, android.R.color.holo_red_dark)
+                                } else {
+                                    ContextCompat.getColor(itemView.context, android.R.color.holo_green_dark)
+                                }
+                                binding.coinChange.setTextColor(changeColor)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
