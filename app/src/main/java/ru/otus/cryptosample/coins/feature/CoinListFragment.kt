@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 import ru.otus.cryptosample.CoinsSampleApp
 import ru.otus.cryptosample.coins.feature.adapter.CoinsAdapter
@@ -27,6 +28,15 @@ class CoinListFragment : Fragment() {
     lateinit var factory: CoinListViewModelFactory
 
     private val viewModel: CoinListViewModel by viewModels { factory }
+
+    private val sharedViewPool = RecyclerView.RecycledViewPool()
+
+    companion object {
+        private const val VIEW_TYPE_CATEGORY = 0
+        private const val VIEW_TYPE_COIN = 1
+        private const val VIEW_TYPE_HORIZONTAL = 2
+
+    }
 
     private lateinit var coinsAdapter: CoinsAdapter
 
@@ -59,24 +69,31 @@ class CoinListFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        coinsAdapter = CoinsAdapter()
+
+        coinsAdapter = CoinsAdapter(sharedViewPool)
 
         val gridLayoutManager = GridLayoutManager(requireContext(), 2)
-        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int): Int {
-                return when (coinsAdapter.getItemViewType(position)) {
-                    0 -> 2 // Category header spans full width
-                    1 -> 1 // Coin item spans half width
-                    else -> 1
+
+        gridLayoutManager.spanSizeLookup =
+            object : GridLayoutManager.SpanSizeLookup() {
+
+                override fun getSpanSize(position: Int): Int {
+                    return when (coinsAdapter.getItemViewType(position)) {
+                        VIEW_TYPE_CATEGORY -> 2
+                        VIEW_TYPE_HORIZONTAL -> 2
+                        VIEW_TYPE_COIN -> 1
+                        else -> 1
+                    }
                 }
             }
-        }
 
         binding.recyclerView.apply {
             layoutManager = gridLayoutManager
             adapter = coinsAdapter
+            itemAnimator = FadeSlideItemAnimator()
         }
     }
+
 
     private fun setupChipToggle() {
         binding.highlightChip.setOnCheckedChangeListener { _, isChecked ->
