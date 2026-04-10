@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.coroutines.launch
 import ru.otus.cryptosample.CoinsSampleApp
 import ru.otus.cryptosample.coins.feature.adapter.CoinsAdapter
+import ru.otus.cryptosample.coins.feature.adapter.CustomItemAnimator
 import ru.otus.cryptosample.coins.feature.di.DaggerCoinListComponent
 import ru.otus.cryptosample.databinding.FragmentCoinListBinding
 import javax.inject.Inject
@@ -65,8 +66,9 @@ class CoinListFragment : Fragment() {
         gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 return when (coinsAdapter.getItemViewType(position)) {
-                    0 -> 2 // Category header spans full width
-                    1 -> 1 // Coin item spans half width
+                    0 -> 2
+                    1 -> 1
+                    2 -> 2
                     else -> 1
                 }
             }
@@ -75,6 +77,10 @@ class CoinListFragment : Fragment() {
         binding.recyclerView.apply {
             layoutManager = gridLayoutManager
             adapter = coinsAdapter
+            itemAnimator = CustomItemAnimator().apply {
+                addDuration = 300
+                removeDuration = 300
+            }
         }
     }
 
