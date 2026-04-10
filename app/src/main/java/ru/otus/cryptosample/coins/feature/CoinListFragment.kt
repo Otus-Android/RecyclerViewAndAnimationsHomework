@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.coroutines.launch
 import ru.otus.cryptosample.CoinsSampleApp
 import ru.otus.cryptosample.coins.feature.adapter.CoinsAdapter
+import ru.otus.cryptosample.coins.feature.adapter.CustomItemAnimator
 import ru.otus.cryptosample.coins.feature.di.DaggerCoinListComponent
 import ru.otus.cryptosample.databinding.FragmentCoinListBinding
 import javax.inject.Inject
@@ -76,6 +77,10 @@ class CoinListFragment : Fragment() {
         binding.recyclerView.apply {
             layoutManager = gridLayoutManager
             adapter = coinsAdapter
+            itemAnimator = CustomItemAnimator().apply {
+                addDuration = 300
+                removeDuration = 300
+            }
         }
     }
 

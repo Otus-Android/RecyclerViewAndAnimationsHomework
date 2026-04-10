@@ -22,6 +22,11 @@ class HorizontalCategoryViewHolder(
     }
 
     fun bind(coins: List<CoinState>) {
+        itemView.alpha = 1f
+        itemView.scaleX = 1f
+        itemView.scaleY = 1f
+        itemView.translationY = 0f
+        
         adapter.submitList(coins)
     }
 }

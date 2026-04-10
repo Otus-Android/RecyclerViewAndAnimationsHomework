@@ -8,6 +8,11 @@ class CategoryHeaderViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
     
     fun bind(categoryName: String) {
+        itemView.alpha = 1f
+        itemView.scaleX = 1f
+        itemView.scaleY = 1f
+        itemView.translationY = 0f
+        
         binding.categoryTitle.text = categoryName
     }
 }

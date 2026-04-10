@@ -13,6 +13,11 @@ class CoinViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(coin: CoinState) {
+        itemView.alpha = 1f
+        itemView.scaleX = 1f
+        itemView.scaleY = 1f
+        itemView.translationY = 0f
+        
         with(binding) {
             coinName.text = coin.name
             coinPrice.text = coin.price
