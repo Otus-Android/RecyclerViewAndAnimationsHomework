@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 import ru.otus.cryptosample.CoinsSampleApp
 import ru.otus.cryptosample.coins.feature.adapter.CoinsAdapter
@@ -29,6 +30,8 @@ class CoinListFragment : Fragment() {
     private val viewModel: CoinListViewModel by viewModels { factory }
 
     private lateinit var coinsAdapter: CoinsAdapter
+
+    private val sharedPool = RecyclerView.RecycledViewPool()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -59,7 +62,7 @@ class CoinListFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        coinsAdapter = CoinsAdapter()
+        coinsAdapter = CoinsAdapter(sharedPool)
 
         val gridLayoutManager = GridLayoutManager(requireContext(), 2)
         gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
@@ -67,6 +70,7 @@ class CoinListFragment : Fragment() {
                 return when (coinsAdapter.getItemViewType(position)) {
                     0 -> 2 // Category header spans full width
                     1 -> 1 // Coin item spans half width
+                    2 -> 2
                     else -> 1
                 }
             }
@@ -75,6 +79,7 @@ class CoinListFragment : Fragment() {
         binding.recyclerView.apply {
             layoutManager = gridLayoutManager
             adapter = coinsAdapter
+            setRecycledViewPool(sharedPool)
         }
     }
 

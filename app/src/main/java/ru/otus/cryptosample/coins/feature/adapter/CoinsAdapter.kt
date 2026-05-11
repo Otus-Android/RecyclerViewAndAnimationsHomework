@@ -4,14 +4,20 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.otus.cryptosample.coins.feature.CoinCategoryState
+import ru.otus.cryptosample.coins.feature.CoinState
 import ru.otus.cryptosample.databinding.ItemCategoryHeaderBinding
 import ru.otus.cryptosample.databinding.ItemCoinBinding
+import ru.otus.cryptosample.databinding.ItemCoinHorizontalListBinding
 
-class CoinsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CoinsAdapter(
+    private val sharedPool: RecyclerView.RecycledViewPool
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     
     companion object {
         private const val VIEW_TYPE_CATEGORY = 0
         private const val VIEW_TYPE_COIN = 1
+
+        private const val VIEW_TYPE_COINS_HORIZONTAL = 2
     }
     
     private var items = listOf<CoinsAdapterItem>()
@@ -21,8 +27,14 @@ class CoinsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         
         categories.forEach { category ->
             adapterItems.add(CoinsAdapterItem.CategoryHeader(category.name))
-            category.coins.forEach { coin ->
-                adapterItems.add(CoinsAdapterItem.CoinItem(coin))
+            if (category.coins.size > 10) {
+                adapterItems.add(
+                    CoinsAdapterItem.CoinItemsHorizontalRV(category.coins)
+                )
+            } else {
+                category.coins.forEach { coin ->
+                    adapterItems.add(CoinsAdapterItem.CoinItem(coin))
+                }
             }
         }
         
@@ -36,6 +48,7 @@ class CoinsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return when (items[position]) {
             is CoinsAdapterItem.CategoryHeader -> VIEW_TYPE_CATEGORY
             is CoinsAdapterItem.CoinItem -> VIEW_TYPE_COIN
+            is CoinsAdapterItem.CoinItemsHorizontalRV -> VIEW_TYPE_COINS_HORIZONTAL
         }
     }
     
@@ -55,10 +68,18 @@ class CoinsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     false
                 )
             )
+            VIEW_TYPE_COINS_HORIZONTAL -> CoinsHorizontalViewHolder( binding =
+                ItemCoinHorizontalListBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                ),
+                sharedPool = sharedPool
+            )
             else -> throw IllegalArgumentException("Unknown view type: $viewType")
         }
     }
-    
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (val item = items[position]) {
             is CoinsAdapterItem.CategoryHeader -> {
@@ -66,6 +87,10 @@ class CoinsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
             is CoinsAdapterItem.CoinItem -> {
                 (holder as CoinViewHolder).bind(item.coin)
+            }
+
+            is CoinsAdapterItem.CoinItemsHorizontalRV -> {
+                (holder as CoinsHorizontalViewHolder).bind(item.coinsList)
             }
         }
     }
