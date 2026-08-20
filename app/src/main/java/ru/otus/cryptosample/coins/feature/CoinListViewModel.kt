@@ -29,11 +29,15 @@ class CoinListViewModel(
     }
 
     fun onHighlightMoversToggled(isChecked: Boolean) {
+        if (highlightMovers == isChecked) return
+
         highlightMovers = isChecked
         updateUiState()
     }
 
     fun onShowAllToggled(isChecked: Boolean) {
+        if (showAll == isChecked) return
+
         showAll = isChecked
         updateUiState()
     }
@@ -54,20 +58,18 @@ class CoinListViewModel(
     }
 
     private fun updateUiState() {
-        var processedCategories = if (showAll) {
-            fullCategories
-        } else {
-            fullCategories.map { category ->
-                category.copy(coins = category.coins.take(4))
-            }
-        }
-
-        processedCategories = processedCategories.map { category ->
+        val processedCategories = fullCategories.map { category ->
             category.copy(coins = category.coins.map { coin ->
                 coin.copy(highlight = highlightMovers && coin.isHotMover)
             })
         }
 
-        _state.update { it.copy(categories = processedCategories) }
+        _state.update {
+            it.copy(
+                categories = processedCategories,
+                showAll = showAll,
+                highlightMovers = highlightMovers,
+            )
+        }
     }
 }

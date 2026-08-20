@@ -60,6 +60,8 @@ dependencies {
     implementation libs.androidx.datastore.preferences
 
     implementation libs.dagger
+    implementation libs.androidx.ui
+    implementation libs.recyclerview
     kapt libs.daggerCompiler
 
     testImplementation libs.junit

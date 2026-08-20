@@ -11,9 +11,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 import ru.otus.cryptosample.CoinsSampleApp
 import ru.otus.cryptosample.coins.feature.adapter.CoinsAdapter
+import ru.otus.cryptosample.coins.feature.adapter.FadeSlideItemAnimator
 import ru.otus.cryptosample.coins.feature.di.DaggerCoinListComponent
 import ru.otus.cryptosample.databinding.FragmentCoinListBinding
 import javax.inject.Inject
@@ -28,7 +30,8 @@ class CoinListFragment : Fragment() {
 
     private val viewModel: CoinListViewModel by viewModels { factory }
 
-    private lateinit var coinsAdapter: CoinsAdapter
+    private var coinsAdapter: CoinsAdapter? = null
+    private var sharedViewPool: RecyclerView.RecycledViewPool? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -59,22 +62,24 @@ class CoinListFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        coinsAdapter = CoinsAdapter()
+        val viewPool = RecyclerView.RecycledViewPool().apply {
+            setMaxRecycledViews(CoinsAdapter.HORIZONTAL_COIN_VIEW_TYPE, 20)
+        }
+        val adapter = CoinsAdapter(viewPool)
+        sharedViewPool = viewPool
+        coinsAdapter = adapter
 
         val gridLayoutManager = GridLayoutManager(requireContext(), 2)
         gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
-                return when (coinsAdapter.getItemViewType(position)) {
-                    0 -> 2 // Category header spans full width
-                    1 -> 1 // Coin item spans half width
-                    else -> 1
-                }
+                return if (adapter.isFullSpan(position)) 2 else 1
             }
         }
 
         binding.recyclerView.apply {
             layoutManager = gridLayoutManager
-            adapter = coinsAdapter
+            this.adapter = adapter
+            itemAnimator = FadeSlideItemAnimator()
         }
     }
 
@@ -99,11 +104,21 @@ class CoinListFragment : Fragment() {
     }
 
     private fun renderState(state: CoinsScreenState) {
-        coinsAdapter.setData(state.categories)
+        if (binding.showAllChip.isChecked != state.showAll) {
+            binding.showAllChip.isChecked = state.showAll
+        }
+        if (binding.highlightChip.isChecked != state.highlightMovers) {
+            binding.highlightChip.isChecked = state.highlightMovers
+        }
+        coinsAdapter?.submitData(state.categories, state.showAll)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.recyclerView.adapter = null
+        sharedViewPool?.clear()
+        sharedViewPool = null
+        coinsAdapter = null
         _binding = null
     }
 }
