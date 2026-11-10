@@ -1,19 +1,19 @@
 package ru.otus.cryptosample.coins.feature.categoryAdapter
 
 import androidx.recyclerview.widget.DiffUtil
-import ru.otus.cryptosample.coins.feature.CoinCategoryState
+import ru.otus.cryptosample.coins.feature.CategoryUiState
 
-class CategoryDiffCallback: DiffUtil.ItemCallback<CoinCategoryState>() {
+class CategoryDiffCallback: DiffUtil.ItemCallback<CategoryUiState>() {
     override fun areItemsTheSame(
-        oldItem: CoinCategoryState,
-        newItem: CoinCategoryState
+        oldItem: CategoryUiState,
+        newItem: CategoryUiState
     ): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem.category.id == newItem.category.id
     }
 
     override fun areContentsTheSame(
-        oldItem: CoinCategoryState,
-        newItem: CoinCategoryState
+        oldItem: CategoryUiState,
+        newItem: CategoryUiState
     ): Boolean {
         return oldItem == newItem
     }

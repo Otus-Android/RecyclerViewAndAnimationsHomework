@@ -4,22 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ru.otus.cryptosample.coins.feature.CoinCategoryState
+import ru.otus.cryptosample.coins.feature.CategoryUiState
 import ru.otus.cryptosample.databinding.ItemCategoryHeaderBinding
 
 class CategoryAdapter :
-    ListAdapter<CoinCategoryState, CategoryHeaderViewHolder>(CategoryDiffCallback()) {
-    private var showAll = false
+    ListAdapter<CategoryUiState, CategoryHeaderViewHolder>(CategoryDiffCallback()) {
 
     private val sharedPool = RecyclerView.RecycledViewPool()
-
-    fun submitList(
-        newList: List<CoinCategoryState>,
-        showAll: Boolean
-    ) {
-        this.showAll = showAll
-        submitList(newList)
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryHeaderViewHolder {
         return CategoryHeaderViewHolder(
@@ -33,9 +24,11 @@ class CategoryAdapter :
     }
 
     override fun onBindViewHolder(holder: CategoryHeaderViewHolder, position: Int) {
+        val item = getItem(position)
+
         holder.bind(
-            getItem(position),
-            showAll
+            item.category,
+            item.showAll
         )
     }
 }

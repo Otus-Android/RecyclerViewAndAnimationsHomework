@@ -21,3 +21,8 @@ data class CoinState(
     val isHotMover: Boolean,
     val highlight: Boolean = false,
 )
+
+data class CategoryUiState(
+    val category: CoinCategoryState,
+    val showAll: Boolean
+)

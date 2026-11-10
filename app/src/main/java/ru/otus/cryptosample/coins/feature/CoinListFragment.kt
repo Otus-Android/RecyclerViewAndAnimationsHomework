@@ -93,10 +93,14 @@ class CoinListFragment : Fragment() {
     }
 
     private fun renderState(state: CoinsScreenState) {
-        categoryAdapter.submitList(
-            state.categories,
-            state.showAll
-        )
+        val items = state.categories.map { category ->
+            CategoryUiState(
+                category = category,
+                showAll = state.showAll
+            )
+        }
+
+        categoryAdapter.submitList(items)
     }
 
     override fun onDestroyView() {

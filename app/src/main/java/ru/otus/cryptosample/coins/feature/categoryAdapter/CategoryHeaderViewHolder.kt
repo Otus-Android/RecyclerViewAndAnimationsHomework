@@ -4,6 +4,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.otus.cryptosample.coins.feature.CoinCategoryState
 import ru.otus.cryptosample.coins.feature.coinsAdapter.CoinsInnerAdapter
+import ru.otus.cryptosample.coins.feature.coinsAdapter.CoinsItemAnimator
 import ru.otus.cryptosample.databinding.ItemCategoryHeaderBinding
 
 class CategoryHeaderViewHolder(
@@ -19,6 +20,7 @@ class CategoryHeaderViewHolder(
         binding.coinsRecyclerView.adapter = coinsAdapter
         binding.coinsRecyclerView.isNestedScrollingEnabled = false
         binding.coinsRecyclerView.setRecycledViewPool(sharedPool)
+        binding.coinsRecyclerView.itemAnimator = CoinsItemAnimator()
     }
 
     fun bind(
@@ -30,7 +32,6 @@ class CategoryHeaderViewHolder(
         val isHorizontal = showAll && category.coins.size > 10
 
         if (currentLayoutIsHorizontal != isHorizontal) {
-
             val gridLayoutManager =
                 if (isHorizontal) {
                     GridLayoutManager(
@@ -47,7 +48,6 @@ class CategoryHeaderViewHolder(
                 }
 
             binding.coinsRecyclerView.layoutManager = gridLayoutManager
-
             currentLayoutIsHorizontal = isHorizontal
         }
 
