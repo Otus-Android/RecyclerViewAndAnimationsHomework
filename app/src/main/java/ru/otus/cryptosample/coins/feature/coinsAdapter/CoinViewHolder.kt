@@ -1,10 +1,10 @@
-package ru.otus.cryptosample.coins.feature.adapter
+package ru.otus.cryptosample.coins.feature.coinsAdapter
 
+import android.R
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import ru.otus.cryptosample.R
 import ru.otus.cryptosample.coins.feature.CoinState
 import ru.otus.cryptosample.databinding.ItemCoinBinding
 
@@ -19,15 +19,15 @@ class CoinViewHolder(
             coinChange.text = coin.discount
 
             val changeColor = if (coin.goesUp) {
-                ContextCompat.getColor(itemView.context, android.R.color.holo_red_dark)
+                ContextCompat.getColor(itemView.context, R.color.holo_red_dark)
             } else {
-                ContextCompat.getColor(itemView.context, android.R.color.holo_green_dark)
+                ContextCompat.getColor(itemView.context, R.color.holo_green_dark)
             }
             coinChange.setTextColor(changeColor)
 
             coinIcon.load(coin.image) {
-                placeholder(R.drawable.generic)
-                error(R.drawable.generic)
+                placeholder(ru.otus.cryptosample.R.drawable.generic)
+                error(ru.otus.cryptosample.R.drawable.generic)
             }
 
             fireBadge.isVisible = coin.highlight

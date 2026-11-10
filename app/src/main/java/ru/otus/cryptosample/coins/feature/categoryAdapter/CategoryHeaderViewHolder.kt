@@ -1,13 +1,13 @@
-package ru.otus.cryptosample.coins.feature.adapter
+package ru.otus.cryptosample.coins.feature.categoryAdapter
 
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.otus.cryptosample.coins.feature.CoinCategoryState
+import ru.otus.cryptosample.coins.feature.coinsAdapter.CoinsInnerAdapter
 import ru.otus.cryptosample.databinding.ItemCategoryHeaderBinding
 
-class CategoryHeaderViewHolder(
-    private val binding: ItemCategoryHeaderBinding
-) : RecyclerView.ViewHolder(binding.root) {
+class CategoryHeaderViewHolder(private val binding: ItemCategoryHeaderBinding) :
+    RecyclerView.ViewHolder(binding.root) {
 
     private val coinsAdapter = CoinsInnerAdapter()
 
@@ -48,6 +48,6 @@ class CategoryHeaderViewHolder(
             currentLayoutIsHorizontal = isHorizontal
         }
 
-        coinsAdapter.setData(category.coins)
+        coinsAdapter.submitList(category.coins)
     }
 }

@@ -1,28 +1,24 @@
-package ru.otus.cryptosample.coins.feature.adapter
+package ru.otus.cryptosample.coins.feature.categoryAdapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ListAdapter
 import ru.otus.cryptosample.coins.feature.CoinCategoryState
 import ru.otus.cryptosample.databinding.ItemCategoryHeaderBinding
 
-class CategoryAdapter : RecyclerView.Adapter<CategoryHeaderViewHolder>() {
-    private var categories = emptyList<CoinCategoryState>()
+class CategoryAdapter :
+    ListAdapter<CoinCategoryState, CategoryHeaderViewHolder>(CategoryDiffCallback()) {
     private var showAll = false
 
-    fun setData(
-        newCategories: List<CoinCategoryState>,
+    fun submitList(
+        newList: List<CoinCategoryState>,
         showAll: Boolean
     ) {
-        categories = newCategories
         this.showAll = showAll
-        notifyDataSetChanged()
+        submitList(newList)
     }
 
-    override fun getItemCount(): Int = categories.size
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryHeaderViewHolder {
-
         return CategoryHeaderViewHolder(
             ItemCategoryHeaderBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -34,7 +30,7 @@ class CategoryAdapter : RecyclerView.Adapter<CategoryHeaderViewHolder>() {
 
     override fun onBindViewHolder(holder: CategoryHeaderViewHolder, position: Int) {
         holder.bind(
-            categories[position],
+            getItem(position),
             showAll
         )
     }

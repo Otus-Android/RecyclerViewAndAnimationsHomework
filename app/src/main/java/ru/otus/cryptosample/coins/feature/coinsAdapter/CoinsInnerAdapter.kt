@@ -1,21 +1,12 @@
-package ru.otus.cryptosample.coins.feature.adapter
+package ru.otus.cryptosample.coins.feature.coinsAdapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ListAdapter
 import ru.otus.cryptosample.coins.feature.CoinState
 import ru.otus.cryptosample.databinding.ItemCoinBinding
 
-class CoinsInnerAdapter : RecyclerView.Adapter<CoinViewHolder>() {
-
-    private var coins = emptyList<CoinState>()
-
-    fun setData(newCoins: List<CoinState>) {
-        coins = newCoins
-        notifyDataSetChanged()
-    }
-
-    override fun getItemCount(): Int = coins.size
+class CoinsInnerAdapter : ListAdapter<CoinState, CoinViewHolder>(CoinsDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoinViewHolder {
         return CoinViewHolder(
@@ -31,6 +22,6 @@ class CoinsInnerAdapter : RecyclerView.Adapter<CoinViewHolder>() {
         holder: CoinViewHolder,
         position: Int
     ) {
-        holder.bind(coins[position])
+        holder.bind(getItem(position))
     }
 }
