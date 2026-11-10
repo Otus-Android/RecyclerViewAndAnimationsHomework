@@ -24,4 +24,16 @@ class CoinsInnerAdapter : ListAdapter<CoinState, CoinViewHolder>(CoinsDiffCallba
     ) {
         holder.bind(getItem(position))
     }
+
+    override fun onBindViewHolder(
+        holder: CoinViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        if (payloads.isNotEmpty() && payloads.all { it == true }) {
+            holder.bindHighlight(getItem(position).highlight)
+        } else {
+            holder.bind(getItem(position))
+        }
+    }
 }

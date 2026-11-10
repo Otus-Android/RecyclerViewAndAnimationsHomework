@@ -17,4 +17,8 @@ class CoinsDiffCallback : DiffUtil.ItemCallback<CoinState>() {
     ): Boolean {
         return oldItem == newItem
     }
+
+    override fun getChangePayload(oldItem: CoinState, newItem: CoinState): Any? {
+        return if (oldItem.copy(highlight = newItem.highlight) == newItem) true else null
+    }
 }

@@ -33,4 +33,8 @@ class CoinViewHolder(
             fireBadge.isVisible = coin.highlight
         }
     }
+
+    fun bindHighlight(highlight: Boolean) {
+        binding.fireBadge.isVisible = highlight
+    }
 }
