@@ -6,8 +6,10 @@ import ru.otus.cryptosample.coins.feature.CoinCategoryState
 import ru.otus.cryptosample.coins.feature.coinsAdapter.CoinsInnerAdapter
 import ru.otus.cryptosample.databinding.ItemCategoryHeaderBinding
 
-class CategoryHeaderViewHolder(private val binding: ItemCategoryHeaderBinding) :
-    RecyclerView.ViewHolder(binding.root) {
+class CategoryHeaderViewHolder(
+    private val binding: ItemCategoryHeaderBinding,
+    sharedPool: RecyclerView.RecycledViewPool
+) : RecyclerView.ViewHolder(binding.root) {
 
     private val coinsAdapter = CoinsInnerAdapter()
 
@@ -16,6 +18,7 @@ class CategoryHeaderViewHolder(private val binding: ItemCategoryHeaderBinding) :
     init {
         binding.coinsRecyclerView.adapter = coinsAdapter
         binding.coinsRecyclerView.isNestedScrollingEnabled = false
+        binding.coinsRecyclerView.setRecycledViewPool(sharedPool)
     }
 
     fun bind(

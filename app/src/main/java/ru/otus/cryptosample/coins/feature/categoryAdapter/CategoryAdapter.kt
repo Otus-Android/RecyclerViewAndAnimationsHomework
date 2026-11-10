@@ -3,12 +3,15 @@ package ru.otus.cryptosample.coins.feature.categoryAdapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import ru.otus.cryptosample.coins.feature.CoinCategoryState
 import ru.otus.cryptosample.databinding.ItemCategoryHeaderBinding
 
 class CategoryAdapter :
     ListAdapter<CoinCategoryState, CategoryHeaderViewHolder>(CategoryDiffCallback()) {
     private var showAll = false
+
+    private val sharedPool = RecyclerView.RecycledViewPool()
 
     fun submitList(
         newList: List<CoinCategoryState>,
@@ -24,7 +27,8 @@ class CategoryAdapter :
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            )
+            ),
+            sharedPool
         )
     }
 
