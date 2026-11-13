@@ -10,10 +10,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 import ru.otus.cryptosample.CoinsSampleApp
-import ru.otus.cryptosample.coins.feature.adapter.CoinsAdapter
+import ru.otus.cryptosample.coins.feature.categoryAdapter.CategoryAdapter
 import ru.otus.cryptosample.coins.feature.di.DaggerCoinListComponent
 import ru.otus.cryptosample.databinding.FragmentCoinListBinding
 import javax.inject.Inject
@@ -28,7 +29,7 @@ class CoinListFragment : Fragment() {
 
     private val viewModel: CoinListViewModel by viewModels { factory }
 
-    private lateinit var coinsAdapter: CoinsAdapter
+    private lateinit var categoryAdapter: CategoryAdapter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -59,22 +60,15 @@ class CoinListFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        coinsAdapter = CoinsAdapter()
-
-        val gridLayoutManager = GridLayoutManager(requireContext(), 2)
-        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int): Int {
-                return when (coinsAdapter.getItemViewType(position)) {
-                    0 -> 2 // Category header spans full width
-                    1 -> 1 // Coin item spans half width
-                    else -> 1
-                }
-            }
-        }
+        categoryAdapter = CategoryAdapter()
 
         binding.recyclerView.apply {
-            layoutManager = gridLayoutManager
-            adapter = coinsAdapter
+            layoutManager = LinearLayoutManager(
+                requireContext(),
+                RecyclerView.VERTICAL,
+                false
+            )
+            adapter = categoryAdapter
         }
     }
 
@@ -99,7 +93,14 @@ class CoinListFragment : Fragment() {
     }
 
     private fun renderState(state: CoinsScreenState) {
-        coinsAdapter.setData(state.categories)
+        val items = state.categories.map { category ->
+            CategoryUiState(
+                category = category,
+                showAll = state.showAll
+            )
+        }
+
+        categoryAdapter.submitList(items)
     }
 
     override fun onDestroyView() {
