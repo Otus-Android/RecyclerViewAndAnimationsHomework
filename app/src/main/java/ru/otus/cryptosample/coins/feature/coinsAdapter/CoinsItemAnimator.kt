@@ -13,18 +13,20 @@ class CoinsItemAnimator : DefaultItemAnimator() {
     }
 
     override fun animateAdd(holder: RecyclerView.ViewHolder): Boolean {
-        holder.itemView.apply {
-            alpha = 0f
-            scaleY = 0.95f
-        }
+        holder.itemView.scaleY = 0.95f
         return super.animateAdd(holder)
     }
 
-    override fun animateRemove(holder: RecyclerView.ViewHolder): Boolean {
-        holder.itemView.apply {
-            alpha = 0f
-            scaleY = 0.95f
-        }
-        return super.animateRemove(holder)
+    override fun onAddFinished(item: RecyclerView.ViewHolder) {
+        item.itemView.scaleY = 1f
+    }
+
+    override fun onRemoveFinished(item: RecyclerView.ViewHolder) {
+        item.itemView.scaleY = 1f
+    }
+
+    override fun endAnimation(item: RecyclerView.ViewHolder) {
+        super.endAnimation(item)
+        item.itemView.scaleY = 1f
     }
 }
