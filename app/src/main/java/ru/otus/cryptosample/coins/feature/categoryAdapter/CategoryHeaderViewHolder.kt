@@ -1,10 +1,10 @@
 package ru.otus.cryptosample.coins.feature.categoryAdapter
 
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.otus.cryptosample.coins.feature.CoinCategoryState
 import ru.otus.cryptosample.coins.feature.coinsAdapter.CoinsInnerAdapter
 import ru.otus.cryptosample.coins.feature.coinsAdapter.CoinsItemAnimator
+import ru.otus.cryptosample.coins.feature.coinsAdapter.CoinsLayoutManager
 import ru.otus.cryptosample.databinding.ItemCategoryHeaderBinding
 
 class CategoryHeaderViewHolder(
@@ -32,22 +32,8 @@ class CategoryHeaderViewHolder(
         val isHorizontal = showAll && category.coins.size > 10
 
         if (currentLayoutIsHorizontal != isHorizontal) {
-            val gridLayoutManager =
-                if (isHorizontal) {
-                    GridLayoutManager(
-                        binding.root.context,
-                        1,
-                        GridLayoutManager.HORIZONTAL,
-                        false
-                    )
-                } else {
-                    GridLayoutManager(
-                        binding.root.context,
-                        2
-                    )
-                }
-
-            binding.coinsRecyclerView.layoutManager = gridLayoutManager
+            binding.coinsRecyclerView.layoutManager =
+                CoinsLayoutManager(binding.root.context, horizontal = isHorizontal)
             currentLayoutIsHorizontal = isHorizontal
         }
 
